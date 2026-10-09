@@ -99,7 +99,7 @@ debian:
         -DINSTALL_LIB_DESTINATION=. \
         -DINSTALL_MODEL_DESTINATION=.
     cmake --build {{bindir}} --config Release --target install --parallel
-    mkdir -p video2x-linux-amd64/DEBIAN
+    mkdir -p video2x-linux-debian-amd64/DEBIAN
     cp packaging/debian/control.debian video2x-linux-debian-amd64/DEBIAN/control
     dpkg-deb --root-owner-group --build video2x-linux-debian-amd64
 
