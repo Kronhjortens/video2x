@@ -75,8 +75,8 @@ debug:
 [unix]
 [group('build')]
 debian:
-    apt-get update
-    apt-get install -y --no-install-recommends \
+    sudo apt update
+    sudo apt install -y --no-install-recommends \
         build-essential cmake clang pkg-config ninja-build \
         libavcodec-dev \
         libavdevice-dev \
@@ -89,16 +89,20 @@ debian:
         libomp-dev \
         libspdlog-dev \
         libboost-program-options-dev
-    cmake -G '{{generator}}' -B /tmp/build -S . \
+    cmake -G '{{generator}}' -B {{bindir}} -S . \
         -DVIDEO2X_USE_EXTERNAL_NCNN=OFF \
         -DCMAKE_CXX_COMPILER={{cxx}} \
         -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX=/tmp/install \
+        -DCMAKE_INSTALL_PREFIX=video2x-linux-debian-amd64/usr \
         -DINSTALL_BIN_DESTINATION=. \
         -DINSTALL_INCLUDE_DESTINATION=include \
         -DINSTALL_LIB_DESTINATION=. \
         -DINSTALL_MODEL_DESTINATION=.
-    cmake --build /tmp/build --config Release --target install --parallel
+    cmake --build {{bindir}} --config Release --target install --parallel
+    mkdir -p video2x-linux-amd64/DEBIAN
+    cp packaging/debian/control.debian video2x-linux-debian-amd64/DEBIAN/control
+    dpkg-deb --root-owner-group --build video2x-linux-debian-amd64
+
 
 [unix]
 [group('build')]
